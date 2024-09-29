@@ -1,0 +1,27 @@
+<h2>Reservations</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Guests</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let reservation of reservations">
+      <td>{{ reservation.name }}</td>
+      <td>{{ reservation.email }}</td>
+      <td>{{ reservation.phone }}</td>
+
+      <td>{{ reservation.date | date }}</td>
+      <td>{{ reservation.time }}</td>
+      <td>{{ reservation.guests }}</td>
+      <td><button (click)="updateReservation(reservation.id)">Update</button></td>
+      <td><button (click)="deleteReservation(reservation.id)">Delete</button></td>
+
+    </tr>
+  </tbody>
+</table>

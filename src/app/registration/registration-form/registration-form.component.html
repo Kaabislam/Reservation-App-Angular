@@ -1,0 +1,42 @@
+<h1>Reservation Form</h1>
+
+<form [formGroup]="reservationForm" (ngSubmit)="submitReservation()">
+  <label for="name">Full Name</label>
+  <input type="text" id="name" formControlName="name" placeholder="Your full name" required>
+  <br>
+
+  <!-- Email -->
+  <label for="email">Email</label>
+  <input type="email" id="email" formControlName="email" placeholder="Your email address" required>
+  <br>
+
+  <!-- Phone -->
+  <label for="phone">Phone Number</label>
+  <input type="tel" id="phone" formControlName="phone" placeholder="Your phone number" required>
+  <br>
+
+  <!-- Date -->
+  <label for="date">Reservation Date</label>
+  <input type="date" id="date" formControlName="date" required>
+  <br>
+
+  <!-- Time -->
+  <label for="time">Reservation Time</label>
+  <input type="time" id="time" formControlName="time" required>
+  <br>
+
+  <!-- Number of Guests -->
+  <label for="guests">Number of Guests</label>
+  <input type="number" id="guests" formControlName="guests" min="1" max="20" placeholder="Number of guests" required>
+  <br>
+
+  <!-- Special Requests -->
+  <label for="requests">Special Requests</label>
+  <textarea id="requests" formControlName="requests" rows="4" placeholder="Any special requests?"></textarea>
+  <br>
+
+  <!-- Submit Button -->
+  <button type="submit" [disabled]="reservationForm.invalid">Submit Reservation</button>
+
+  
+</form>
