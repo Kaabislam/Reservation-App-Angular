@@ -35,7 +35,7 @@ export class ReservationService {
   deleteReservation(reservationId:number):void{
     this.reservations = this.reservations.filter(reservation => reservation.id != reservationId);
     this.saveReservationsToLocalStorage();
-    console.log("delete happened")``
+    console.log("delete happened");
   }
   updateReservation(reservation:Reservation):void{
     const index = this.reservations.findIndex(res => res.id == reservation.id);
