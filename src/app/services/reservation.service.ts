@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Reservation } from '../models/reservation.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
+  private apiUrl = 'http://localhost:8080/api/reservations';
   private reservations:Reservation[] = [];
-  constructor() {
-    this.loadReservationFromStorage();
+  constructor(private http:HttpClient) {
+    // this.loadReservationFromStorage();
    }
    private loadReservationFromStorage():void{
     const storedReservations = localStorage.getItem('reservations');
@@ -18,31 +21,20 @@ export class ReservationService {
     localStorage.setItem('reservations',JSON.stringify(this.reservations));
     
   }
-  addReservation(reservation:Reservation):void{
-    reservation.id = Date.now();
-    this.reservations.push(reservation);
-    this.saveReservationsToLocalStorage();
+  addReservation(reservation:Reservation):Observable<Reservation>{
+    return this.http.post<Reservation>(this.apiUrl,reservation);
   }
-  getReservationById(id: number): Reservation | null {
-    const reservation = this.reservations.find(res => res.id === id);
-    return reservation || null; 
+  getReservationById(id: number): Observable<Reservation> {
+    return this.http.get<Reservation>( `${this.apiUrl}/${id}`);
   }
-  getAllReservation():Reservation[]{
-    console.log(this.reservations);
-    return this.reservations;
+  getAllReservation():Observable<Reservation[]>{
+    return this.http.get<Reservation[]>(this.apiUrl);   
   }
 
-  deleteReservation(reservationId:number):void{
-    this.reservations = this.reservations.filter(reservation => reservation.id != reservationId);
-    this.saveReservationsToLocalStorage();
-    console.log("delete happened");
+  deleteReservation(reservationId:number):Observable<void>{
+    return this.http.delete<void>(`${this.apiUrl}/${reservationId}`);
   }
-  updateReservation(reservation:Reservation):void{
-    const index = this.reservations.findIndex(res => res.id == reservation.id);
-    if(index != -1){
-      this.reservations[index] = reservation;
-      this.saveReservationsToLocalStorage();
-    }
-    console.log(index);
+  updateReservation(reservation:Reservation):Observable<Reservation>{
+    return this.http.put<Reservation>(`${this.apiUrl}/${reservation.id}`,reservation);
   }
 }

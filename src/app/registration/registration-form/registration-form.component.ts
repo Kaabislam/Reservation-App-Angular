@@ -43,15 +43,24 @@ export class RegistrationFormComponent implements OnInit {
 
   loadReservation():void{
     if(this.reservationId != null){
-      this.reservation = this.reservationService.getReservationById(this.reservationId);
+      this.reservationService.getReservationById(this.reservationId).subscribe(
+        (response) => {
+          this.reservation = response;
+          if(this.reservation){
+            this.reservationForm.patchValue(this.reservation);
+          }
+        },
+        (error) => {
+          console.log("error on fetcing te data")
+        }
+      );
     }
-    if(this.reservation){
-      this.reservationForm.patchValue(this.reservation);
-    }
+   
   }
 
 
   submitReservation(){
+    console.log('sadsad');
     if(this.reservationForm.valid){
       if(this.reservationId != null){
         const formData = this.reservationForm.value;
@@ -59,11 +68,25 @@ export class RegistrationFormComponent implements OnInit {
           ...formData,
           id : this.reservationId
         };
-        this.reservationService.updateReservation(updatedReservation);
+        this.reservationService.updateReservation(updatedReservation).subscribe(
+          (response) => {
+            console.log('Reservation updated successfully:', response);
+          },
+          (error) => {
+            console.error('Error updating reservation:', error);
+          }
+        );
       }
       else{
         const newreservation:Reservation = this.reservationForm.value;
-        this.reservationService.addReservation(newreservation);
+        this.reservationService.addReservation(newreservation).subscribe(
+          (response) => {
+            console.log('reservation added :',response);
+          },
+          (error) => {
+            console.error('Error adding reservation:', error);  
+          }
+        );
       }
       
     }else {
